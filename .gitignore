@@ -1,0 +1,5 @@
+# Anything starting with a .
+\.*
+
+# Exclude target directories
+**/target/**
