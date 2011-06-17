@@ -7,10 +7,8 @@
 	<packaging>pom</packaging>
 	<name>ureeka project</name>
 
-	<!-- Source code control management -->
 	<scm>
-		<!-- connection>scm:svn:http://ictscm/ebiz/Products/DutiesOnline/trunk</connection -->
-		<!-- developerConnection>scm:svn:http://ictscm/ebiz/Products/DutiesOnline/trunk</developerConnection -->
+		<connection>https://github.com/sunbayc/ureeka/</connection> 
 	</scm>
 
 	<dependencies>
