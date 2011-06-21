@@ -84,15 +84,15 @@ public abstract class AbstractProperty<T> implements Property<T>, Serializable {
 	public AbstractProperty(Identifier identifier, String name) {
 		super();
 		this.propertyIdentifier = identifier;
-		this.name = name;
+		this.name = (name == null) ? this.getClass().getSimpleName() : name;
 	}
 
 	public AbstractProperty(Identifier identifier) {
-		this(identifier, "RootContainer");
+		this(identifier, null);
 	}
 
 	public AbstractProperty() {
-		this(new TemporaryIdentifier(), "(root/unknown)");
+		this(new TemporaryIdentifier(), null);
 	}
 
 	public void registerListener(PropertyEventListener<T> eventListener) {
@@ -269,12 +269,7 @@ public abstract class AbstractProperty<T> implements Property<T>, Serializable {
 	}
 
 	public String toString() {
-		if (get() instanceof PropertiesContainer) {
-			return String.format("Property: %s, Contents: (%s)", getPropertyName(), get());
-		}
-		if (get() == null) {
-			return String.format("Property: %s, Contains: [Empty]", getPropertyName());
-		}
+		if (get() == null) return null;
 		return get().toString();
 	}
 

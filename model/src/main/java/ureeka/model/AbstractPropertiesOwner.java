@@ -24,7 +24,9 @@ package ureeka.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the default implementation of a PropertyOwner
@@ -159,4 +161,82 @@ public abstract class AbstractPropertiesOwner extends AbstractProperty
 		return getInvalidProperties(true).size() == 0;
 	}
 
+	public Map<String, Object> getAsMap(final boolean descend) {
+		
+		final Map<String, Object> map = new HashMap<String, Object>();
+
+		visitProperties(new PropertyVisitor() {
+
+			@SuppressWarnings("unchecked")
+			public void visit(Property<?> property) {
+				
+				if (property instanceof PropertiesContainer) {
+				
+					if (descend) {
+						
+						Object propertyAsMap = ((PropertiesContainer) property).getAsMap(descend);
+						
+						if (propertyAsMap == null) return; // Don't bother adding nulls
+						
+						Object currentValue = map.get(property.getPropertyName());
+				
+						// PropertyList handling, if we detect that a property
+						// already exists for a given property name, we assume it is a list
+						if (currentValue == null) {
+							map.put(property.getPropertyName(), propertyAsMap);
+						} else {
+							if (!(currentValue instanceof List)) {
+								map.put(property.getPropertyName(), new ArrayList());
+								((List) map.get(property.getPropertyName())).add(currentValue);
+							} 
+							((List) map.get(property.getPropertyName())).add(propertyAsMap);
+						}
+						
+					}
+					
+				} else {
+					
+					map.put(property.getPropertyName(), property);
+					
+				}
+
+			}
+
+		});
+
+		return map;
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Property<Object> getPropertyByName(String name) {
+		Map<String, Object> map = getAsMap(false);
+		if (!map.containsKey(name)) throw new IllegalArgumentException("Could not find property: " + name);
+		Object value = map.get(name);
+		if (value instanceof Property<?>) return (Property) value;
+		throw new IllegalArgumentException("Found value (" + value
+				+ ") for name (" + name + ") but it was not a property!");
+	}
+	
+	@Override
+	public String toString() {
+		
+		final StringBuffer buffer = new StringBuffer();
+		
+		visitProperties(new PropertyVisitor() {
+
+			public void visit(Property<?> property) {
+				if (property.get() != null)
+					buffer.append(String.format("%s=%s,", property.getPropertyName(), property.get()));
+			}
+			
+		});
+
+		String returnValue = buffer.toString();
+		
+		if (returnValue.endsWith(",")) return returnValue.substring(0, returnValue.length() - 1);
+		return returnValue;
+		
+	}
+	
 }

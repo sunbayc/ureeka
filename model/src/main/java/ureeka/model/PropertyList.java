@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 /**
  * Provides a List container for Properties, and adds some further functionality
@@ -442,6 +443,15 @@ public class PropertyList<E> extends AbstractProperty<E> implements
 	}
 	
 	public void visitProperties(PropertyVisitor visitor) { }
+	
+	public Map<String, Object> getAsMap(boolean descend) {
+		return null;
+	}
+
+	// Can't do it
+	public Property<Object> getPropertyByName(String name) {
+		throw new UnsupportedOperationException();
+	}
 	
 }
 

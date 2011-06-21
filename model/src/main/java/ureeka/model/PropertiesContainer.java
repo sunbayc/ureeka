@@ -23,6 +23,7 @@
 package ureeka.model;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Interface for objects that contain other properties
@@ -66,5 +67,22 @@ public interface PropertiesContainer {
 	 * @param visitor
 	 */
 	public void visitProperties(PropertyVisitor visitor);
+	
+	/**
+	 * @param indicates that this should return the properties of this container
+	 * and all child containers
+	 * @return owned properties as a Map of property name, property or another map
+	 * (if representing the properties of a child property container)
+	 */
+	public Map<String, Object> getAsMap(boolean descend);
+
+	/**
+	 * Retrieves the property of the given name
+	 * 
+	 * @param name name of property to return
+	 * @return the property, if found
+	 * @throws IllegalArgumentException if the named property is not found
+	 */
+	public Property<Object> getPropertyByName(String name);
 	
 }
