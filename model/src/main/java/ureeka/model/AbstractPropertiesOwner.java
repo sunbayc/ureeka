@@ -162,6 +162,10 @@ public abstract class AbstractPropertiesOwner extends AbstractProperty
 	}
 
 	public Map<String, Object> getAsMap(final boolean descend) {
+		return getAsMap(descend, false);
+	}
+	
+	public Map<String, Object> getAsMap(final boolean descend, final boolean valuesOnly) {
 		
 		final Map<String, Object> map = new HashMap<String, Object>();
 
@@ -174,7 +178,7 @@ public abstract class AbstractPropertiesOwner extends AbstractProperty
 				
 					if (descend) {
 						
-						Object propertyAsMap = ((PropertiesContainer) property).getAsMap(descend);
+						Object propertyAsMap = ((PropertiesContainer) property).getAsMap(descend, valuesOnly);
 						
 						if (propertyAsMap == null) return; // Don't bother adding nulls
 						
@@ -196,7 +200,13 @@ public abstract class AbstractPropertiesOwner extends AbstractProperty
 					
 				} else {
 					
-					map.put(property.getPropertyName(), property);
+					if (property.get() instanceof PropertiesContainer) {
+						Object propertyAsMap = ((PropertiesContainer) property.get()).getAsMap(descend, valuesOnly);
+						map.put(property.getPropertyName(), propertyAsMap);
+					} else {
+						if (valuesOnly) map.put(property.getPropertyName(), property.get());
+						else map.put(property.getPropertyName(), property);
+					}
 					
 				}
 
@@ -206,6 +216,12 @@ public abstract class AbstractPropertiesOwner extends AbstractProperty
 
 		return map;
 
+	}
+	
+	public boolean isEqualTo(Property property) {
+		if (this == property) return true;
+		if (!(property instanceof PropertiesContainer)) return false;
+		return this.getAsMap(true, true).equals(((PropertiesContainer) property).getAsMap(true, true));
 	}
 	
 	@SuppressWarnings("unchecked")

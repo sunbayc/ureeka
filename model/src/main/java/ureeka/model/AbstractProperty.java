@@ -300,6 +300,13 @@ public abstract class AbstractProperty<T> implements Property<T>, Serializable {
 		return propertyIdentifier.equals(other.propertyIdentifier);
 	}
 
+	public boolean isEqualTo(Property<T> property) {
+		if (get() == property.get()) return true;
+		if (get() == null) return false;
+		if (property.get() == null) return false;
+		return get().equals(property.get());
+	}
+	
 	public void startLifeCycle() {
 		oldValue = currentValue;
 		hasChanged = false;

@@ -45,22 +45,22 @@ public interface PropertiesContainer {
 	 * @param property the property to deregister with this container
 	 * @return true if a property was deregistered
 	 */
-	public boolean deregisterWith(Property<?> property);
+public boolean deregisterWith(Property<?> property);
 	
 	/**
-	 * @param indicates that this should return properties for this container,
+	 * @param descend indicates that this should return properties for this container,
 	 * and all child containers
 	 * @return properties in an invalid state
 	 */
 	public List<Property<?>> getInvalidProperties(boolean descend);
 	
 	/**
-	 * @param indicates that this should return properties for this container,
+	 * @param descend indicates that this should return properties for this container,
 	 * and all child containers
 	 * @return properties in a changed state
 	 */
 	public List<Property<?>> getChangedProperties(boolean descend);
-
+	
 	/**
 	 * Enables the visitation of all properties owned by this container
 	 * 
@@ -69,12 +69,22 @@ public interface PropertiesContainer {
 	public void visitProperties(PropertyVisitor visitor);
 	
 	/**
-	 * @param indicates that this should return the properties of this container
+	 * @param descend indicates that this should return the properties of this container
 	 * and all child containers
 	 * @return owned properties as a Map of property name, property or another map
 	 * (if representing the properties of a child property container)
 	 */
 	public Map<String, Object> getAsMap(boolean descend);
+	
+	/**
+	 * @param descend indicates that this should return the properties of this container
+	 * and all child containers
+	 * @param valuesOnly indicates that this should return values of properties, rather
+	 * than properties themselves
+	 * @return owned properties as a Map of property name, property or another map
+	 * (if representing the properties of a child property container)
+	 */
+	public Map<String, Object> getAsMap(boolean descend, boolean valuesOnly);
 
 	/**
 	 * Retrieves the property of the given name

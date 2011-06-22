@@ -447,6 +447,10 @@ public class PropertyList<E> extends AbstractProperty<E> implements
 	public Map<String, Object> getAsMap(boolean descend) {
 		return null;
 	}
+	
+	public Map<String, Object> getAsMap(boolean descend, boolean valuesOnly) {
+		return null;
+	}
 
 	// Can't do it
 	public Property<Object> getPropertyByName(String name) {

@@ -152,4 +152,11 @@ public interface Property<T> {
 	 */
 	public Range<T> getRange();
 	
+	/**
+	 * Read this as "isEqualToByValue(s)"
+	 * 
+	 * @return true if the value contained by this Property equals the value of the passed Property
+	 */
+	public boolean isEqualTo(Property<T> property);
+	
 }
